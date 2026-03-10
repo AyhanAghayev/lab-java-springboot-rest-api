@@ -1,6 +1,7 @@
 package com.example.za.Controllers;
 
 import com.example.za.Models.Customer;
+import com.example.za.Models.Product;
 import com.example.za.Services.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,24 @@ public class CustomerController {
         List<Customer> customers=customerService.getAllCustomers();
         return ResponseEntity.ok(customers);
     }
+    @PutMapping("/{name}")
+    public ResponseEntity<?> updateProductByName(@RequestHeader("API-Key") String apiKey, @PathVariable String name, @Valid @RequestBody Customer customer) {
+        if(!isValidApiKey(apiKey)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("API key is invalid!");
+        }
+        customerService.updateCustomertByName(name, customer);
+        return ResponseEntity.ok(customer);
+    }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<?> deleteProductByName(@RequestHeader("API-Key") String apiKey, @PathVariable String name) {
+        if(!isValidApiKey(apiKey)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("API key is invalid!");
+        }
+        customerService.deleteCustomerByName(name);
+        return ResponseEntity.status((HttpStatus.NO_CONTENT)).body("Deleted customer");
+    }
+
     @GetMapping("/email")
     public ResponseEntity<?> getCustomerByEmail(@RequestHeader("API-Key") String apikey,@PathVariable String email){
         if(!isValidApiKey(apikey)){

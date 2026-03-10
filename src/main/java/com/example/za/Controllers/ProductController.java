@@ -52,6 +52,24 @@ public class ProductController {
         }
         return  ResponseEntity.ok(product);
     }
+    @PutMapping("/{name}")
+    public ResponseEntity<?> updateProductByName(@RequestHeader("API-Key") String apiKey, @PathVariable String name, @Valid @RequestBody Product product) {
+        if(!isValidApiKey(apiKey)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("API key is invalid!");
+        }
+        productService.updateProductByName(name, product);
+        return ResponseEntity.ok(product);
+    }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<?> deleteProductByName(@RequestHeader("API-Key") String apiKey, @PathVariable String name) {
+        if(!isValidApiKey(apiKey)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("API key is invalid!");
+        }
+        productService.deleteProductByName(name);
+        return ResponseEntity.status((HttpStatus.NO_CONTENT)).body("Deleted product");
+    }
+
     @GetMapping("/category/{category}")
     public ResponseEntity<?> getProductByCategory(@RequestHeader("API-Key") String api_Key,@PathVariable String category){
         if(!isValidApiKey(api_Key)){

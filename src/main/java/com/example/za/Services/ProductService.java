@@ -23,7 +23,7 @@ public class ProductService {
                 filter(p-> p.getName().equalsIgnoreCase(name)).findFirst();
 
     }
-    public boolean updateProduct(String name, Product updatedProduct) {
+    public boolean updateProductByName(String name, Product updatedProduct) {
         for (Product product : products) {
             if (product.getName().equalsIgnoreCase(name)) {
                 product.setName(updatedProduct.getName());
@@ -35,7 +35,7 @@ public class ProductService {
         }
         return false;
     }
-    public boolean deleteProduct(String name){
+    public boolean deleteProductByName(String name){
         return products.removeIf(p->p.getName().equalsIgnoreCase(name));
     }
     public List<Product> getProductsByCategory(String category){
@@ -44,6 +44,5 @@ public class ProductService {
     public List<Product> getProductsByPriceRange(double minPrice,double maxPrice){
         return products.stream().filter(p->p.getPrice()>minPrice &&p.getPrice()<maxPrice).toList();
     }
-
 
 }
